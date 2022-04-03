@@ -1,4 +1,4 @@
-package kaya.sengul.grocery;
+package kaya.sengul.secondweek.grocery;
 
 public abstract class Fruit {
 	protected int stock;

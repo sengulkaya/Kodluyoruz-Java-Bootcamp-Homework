@@ -1,13 +1,13 @@
-package kaya.sengul.grocery;
+package kaya.sengul.secondweek.grocery;
 
-public class Cherry extends Fruit {
+public class Pear extends Fruit {
 	
 	@Override
 	public double value()
 	{
 		return stock * pricePerKg;
 	}
-	public Cherry(double pricePerKg, int stock)
+	public Pear(double pricePerKg, int stock)
 	{
 		super.pricePerKg = pricePerKg;
 		super.stock = stock;
@@ -19,20 +19,17 @@ public class Cherry extends Fruit {
 			System.out.println("Negatif sayý girdiniz. Sipariþ alýnamadý!%n");
 			return;
 		}
-
 		if (stock - val < 0) {
-			System.out.printf("You can only order %d many cherries%n", stock);
+			System.out.printf("You can only order %d many pears%n", stock);
 			System.out.println("Sipariþ alýnamadý!");
 			return;
 		}
-
 		super.stock -= val;
-
 	}
 	@Override
 	public String toString()
 	{
-		return String.format("%d many cherry at price %.2f$ and it is worth " +
+		return String.format("%d many pear at price %.2f$ and it is worth " +
 				"%.2f$", stock, pricePerKg, value());
 	}
 

@@ -1,4 +1,4 @@
-package kaya.sengul.grocery;
+package kaya.sengul.secondweek.grocery;
 /*
  * Manav dükkaný açmak isteyen bir adam hal'den bir miktar elma, bir miktar armut, bir miktar kiraz alacaktýr.
  * Mallar dükkana gelmiþtir.

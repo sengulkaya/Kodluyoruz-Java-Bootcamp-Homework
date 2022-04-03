@@ -1,4 +1,4 @@
-package kaya.sengul.grocery;
+package kaya.sengul.secondweek.grocery;
 
 import java.util.HashMap;
 import java.util.Locale;
