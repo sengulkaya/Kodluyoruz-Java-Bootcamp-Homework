@@ -1,9 +1,14 @@
 package kaya.sengul.app.service.rest.ticketreservation.controller;
 
+import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PegasusAirlinesRequestDTO;
+import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TurkishAirlinesRequestDTO;
+import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PegasusAirlinesResponseDTO;
+import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.service.PegasusAirlinesService;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/flight/pegasusAirlines")
@@ -14,5 +19,20 @@ public class PegasusAirlinesController {
     public PegasusAirlinesController(PegasusAirlinesService pegasusAirlinesService)
     {
         m_pegasusAirlinesService = pegasusAirlinesService;
+    }
+
+    @PostMapping("/save")//ok
+    public PegasusAirlinesResponseDTO saveFlight(@RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO) throws Exception {
+        return m_pegasusAirlinesService.saveFlight(pegasusAirlinesRequestDTO);
+    }
+
+    @GetMapping("find/all")//ok
+    public List<PegasusAirlinesResponseDTO> findAllFlights() throws Exception {
+        return m_pegasusAirlinesService.findPegasusAirlinesFlights();
+    }
+
+    @GetMapping("/find/id")//ok
+    public PegasusAirlinesResponseDTO findFlightById(@RequestParam("id") Long flightId) throws Exception {
+        return m_pegasusAirlinesService.findFlightById(flightId);
     }
 }

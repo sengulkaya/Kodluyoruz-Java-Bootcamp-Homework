@@ -18,48 +18,54 @@ public class PegasusAirlinesRequestDTO {
         return name;
     }
 
-    public void setName(String name) {
+    public PegasusAirlinesRequestDTO setName(String name) {
         this.name = name;
+        return this;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public PegasusAirlinesRequestDTO setCapacity(int capacity) {
         this.capacity = capacity;
+        return this;
     }
 
     public double getBaseFare() {
         return baseFare;
     }
 
-    public void setBaseFare(double baseFare) {
+    public PegasusAirlinesRequestDTO setBaseFare(double baseFare) {
         this.baseFare = baseFare;
+        return this;
     }
 
     public boolean isInternational() {
         return international;
     }
 
-    public void setInternational(boolean international) {
+    public PegasusAirlinesRequestDTO setInternational(boolean international) {
         this.international = international;
+        return this;
     }
 
     public String getCityOfDeparture() {
         return cityOfDeparture;
     }
 
-    public void setCityOfDeparture(String cityOfDeparture) {
+    public PegasusAirlinesRequestDTO setCityOfDeparture(String cityOfDeparture) {
         this.cityOfDeparture = cityOfDeparture;
+        return this;
     }
 
     public String getCityOfArrival() {
         return cityOfArrival;
     }
 
-    public void setCityOfArrival(String cityOfArrival) {
+    public PegasusAirlinesRequestDTO setCityOfArrival(String cityOfArrival) {
         this.cityOfArrival = cityOfArrival;
+        return this;
     }
 
     /*public LocalDate getDepartureTime() {

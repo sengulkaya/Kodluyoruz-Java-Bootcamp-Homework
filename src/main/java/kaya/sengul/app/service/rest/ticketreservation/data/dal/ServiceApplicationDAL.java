@@ -1,6 +1,7 @@
 package kaya.sengul.app.service.rest.ticketreservation.data.dal;
 
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.passenger.Passenger;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.PegasusAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.TurkishAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
 import kaya.sengul.app.service.rest.ticketreservation.data.repository.IPassengerRepository;
@@ -38,10 +39,10 @@ public class ServiceApplicationDAL {
         return m_turkishAirlinesRepository.save(turkishAirlines);
     }
 
-    public Ticket saveTurkishAirlinesTicket(Ticket ticket)
+    public TurkishAirlines findTurkishAirlinesFlightById(Long flightId)
     {
 
-        return m_ticketRepository.save((ticket));
+        return m_turkishAirlinesRepository.findById(flightId).orElseThrow();
     }
 
     public Iterable<TurkishAirlines> findTurkishAirlinesFlights()
@@ -50,10 +51,56 @@ public class ServiceApplicationDAL {
         return m_turkishAirlinesRepository.findAll();
     }
 
-    public TurkishAirlines findTurkishAirlinesFlightById(Long flightId)
+    public PegasusAirlines savePegasusAirlinesFlight(PegasusAirlines pegasusAirlines)
     {
 
-        return m_turkishAirlinesRepository.findById(flightId).orElseThrow();
+        return m_pegasusAirlinesRepository.save(pegasusAirlines);
+    }
+
+    public PegasusAirlines findPegasusAirlinesFlightById(Long flightId)
+    {
+
+        return m_pegasusAirlinesRepository.findById(flightId).orElseThrow();
+    }
+
+    public Iterable<PegasusAirlines> findPegasusAirlinesFlights()
+    {
+
+        return m_pegasusAirlinesRepository.findAll();
+    }
+
+
+    public Ticket saveTurkishAirlinesTicket(Ticket ticket)
+    {
+
+        return m_ticketRepository.save((ticket));
+    }
+
+    public Iterable<Ticket> findTurkishAirlinesTicketsByPassengerId(Long passengerId)
+    {
+        return m_ticketRepository.findByPassengerId(passengerId);
+    }
+
+    public Iterable<Ticket> findTurkishAirlinesTickets()
+    {
+        return m_ticketRepository.findAll();
+    }
+
+
+    public Ticket savePegasusAirlinesTicket(Ticket ticket)
+    {
+
+        return m_ticketRepository.save((ticket));
+    }
+
+    public Iterable<Ticket> findPegasusAirlinesTicketsByPassengerId(Long passengerId)
+    {
+        return m_ticketRepository.findByPassengerId(passengerId);
+    }
+
+    public Iterable<Ticket> findPegasusAirlinesTickets()
+    {
+        return m_ticketRepository.findAll();
     }
 
     public Passenger updatePassenger(Long passengerId)
@@ -73,12 +120,5 @@ public class ServiceApplicationDAL {
         return m_passengerRepository.findById(passengerId).orElseThrow();
     }
 
-    public Iterable<Ticket> findTurkishAirlinesTicketsByPassengerId(Long passengerId)
-    {
-        return m_ticketRepository.findByPassengerId(passengerId);
-    }
-    public Iterable<Ticket> findTurkishAirlinesTickets()
-    {
-        return m_ticketRepository.findAll();
-    }
+
 }

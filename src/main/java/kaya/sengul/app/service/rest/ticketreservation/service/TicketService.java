@@ -5,8 +5,10 @@ import kaya.sengul.app.service.rest.ticketreservation.converter.PassengerConvert
 import kaya.sengul.app.service.rest.ticketreservation.converter.TicketConverter;
 import kaya.sengul.app.service.rest.ticketreservation.data.dal.ServiceApplicationDAL;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.passenger.Passenger;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.PegasusAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.TurkishAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
+import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PassengerRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TicketRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResponseDTO;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,7 @@ public class TicketService {
         m_passengerService = passengerService;
         m_passengerConverter = passengerConverter;
     }
+
     public List<TicketResponseDTO> findTurkishAirlinesTicketByPassengerId(Long passengerId) throws Exception {
         return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
                 .map(m_ticketConverter::toTicketResponseDTO)
@@ -67,23 +70,61 @@ public class TicketService {
 
         int size = ticketSet.size();
         if (size == flight.getCapacity())
-            throw new RuntimeException("Flight is full");
+            throw new Exception("Flight is full");
 
         int seatNumber = size + 1;
         ticket.setSeatNumber(seatNumber);
         Set<Ticket> passengerTickets = passenger.getPassengerTickets();
         passengerTickets.add(ticket);
         ticket.setPassenger(passenger);
-        //passenger.setPassengerTickets(passengerTickets);
         ticket.setFlight(flight);
         ticketSet.add(ticket);
         flight.setTickets(ticketSet);
 
 
-        //m_serviceApplicationDAL.savePassenger(passenger);
-        //m_serviceApplicationDAL.saveTurkishAirlinesFlight(flight);
-
         return m_ticketConverter.toTicketResponseDTO(m_serviceApplicationDAL.saveTurkishAirlinesTicket(ticket));
+    }
+
+
+    public List<TicketResponseDTO> findPegasusAirlinesTicketByPassengerId(Long passengerId) throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
+                .map(m_ticketConverter::toTicketResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponseDTO> findPegasusAirlinesTickets() throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTickets().spliterator(), false)
+                .map(m_ticketConverter::toTicketResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public TicketResponseDTO reservePegasusAirlinesTicket(TicketRequestDTO ticketRequestDTO) throws Exception
+    {
+        long passengerId = ticketRequestDTO.getPassengerId();
+        long flightId = ticketRequestDTO.getFlightId();
+
+        PegasusAirlines flight = m_serviceApplicationDAL.findPegasusAirlinesFlightById(flightId);
+        Passenger passenger = m_serviceApplicationDAL.findPassengerById(passengerId);
+        Ticket ticket = m_ticketConverter.toTicket(ticketRequestDTO, flight);
+
+        Set<Ticket> ticketSet = flight.getTickets();
+
+        int size = ticketSet.size();
+        if (size == flight.getCapacity())
+            throw new Exception("Flight is full");
+
+        int seatNumber = size + 1;
+        ticket.setSeatNumber(seatNumber);
+        Set<Ticket> passengerTickets = passenger.getPassengerTickets();
+        passengerTickets.add(ticket);
+        ticket.setPassenger(passenger);
+        ticket.setFlight(flight);
+        ticketSet.add(ticket);
+        flight.setTickets(ticketSet);
+
+
+        return m_ticketConverter.toTicketResponseDTO(m_serviceApplicationDAL.savePegasusAirlinesTicket(ticket));
     }
 }
 

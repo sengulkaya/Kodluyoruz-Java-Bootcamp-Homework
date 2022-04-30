@@ -9,18 +9,38 @@ import java.util.Set;
 
 @Component
 public class PegasusAirlinesResponseDTO {
+    private long id;
     private String name;
+    private int capacity;
     private String cityOfDeparture;
     private String cityOfArrival;
     //private LocalDate departureTime;
-    private Set<Ticket> bookedTickets = new HashSet<>();
+    private Set<Integer> bookedSeats = new HashSet<>();
 
+    public long getId() {
+        return id;
+    }
+
+    public PegasusAirlinesResponseDTO setId(long id) {
+        this.id = id;
+        return this;
+    }
     public String getName() {
         return name;
     }
 
     public PegasusAirlinesResponseDTO setName(String name) {
         this.name = name;
+        return this;
+    }
+
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public PegasusAirlinesResponseDTO setCapacity(int capacity) {
+        this.capacity = capacity;
         return this;
     }
 
@@ -52,12 +72,12 @@ public class PegasusAirlinesResponseDTO {
         return this;
     }*/
 
-    public Set<Ticket> getBookedTickets() {
-        return bookedTickets;
+    public Set<Integer> getBookedSeats() {
+        return bookedSeats;
     }
 
-    public PegasusAirlinesResponseDTO setBookedTickets(Set<Ticket> bookedTickets) {
-        this.bookedTickets = bookedTickets;
+    public PegasusAirlinesResponseDTO setBookedSeats(Set<Integer> bookedSeats) {
+        this.bookedSeats = bookedSeats;
         return this;
     }
     public String toString()
