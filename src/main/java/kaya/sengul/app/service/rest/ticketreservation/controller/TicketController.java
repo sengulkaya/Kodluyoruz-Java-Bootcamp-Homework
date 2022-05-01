@@ -4,6 +4,7 @@ import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PassengerRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TicketRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TurkishAirlinesRequestDTO;
+import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PegasusAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.service.TicketService;
@@ -32,13 +33,10 @@ public class TicketController {
     public List<TicketResponseDTO> findTurkishAirlinesTickets() throws Exception {
         return m_ticketService.findTurkishAirlinesTickets();
     }
-
-    //passengerId is transiet in tickets table so it is not serializable and stored in db
-    //I can not make any search by using it!
-    /*@GetMapping("/TurkishAirlines/tickets/find/passengerId")
-    public List<TicketResponseDTO> findTurkishAirlinesTicketByPassengerId(@RequestParam Long passengerId) throws Exception {
-        return m_ticketService.findTurkishAirlinesTicketByPassengerId(passengerId);
-    }*/
+    @PostMapping("/TurkishAirlines/cancel/id")
+    public TicketResponseDTO cancelTurkishAirlinesTicket(@RequestParam("id") Long ticketId) throws Exception {
+        return m_ticketService.cancelTurkishAirlinesTicket(ticketId);
+    }
 
 
     @PostMapping("/PegasusAirlines/reserve")//ok
@@ -50,6 +48,18 @@ public class TicketController {
     public List<TicketResponseDTO> findPegasusAirlinesTickets() throws Exception {
         return m_ticketService.findPegasusAirlinesTickets();
     }
+
+    @PostMapping("/PegasusAirlines/cancel/id")
+    public TicketResponseDTO cancelPegasusAirlinesTicket(@RequestParam("id") Long ticketId) throws Exception {
+        return m_ticketService.cancelPegasusAirlinesTicket(ticketId);
+    }
+
+    //passengerId is transiet in tickets table so it is not serializable and stored in db
+    //I can not make any search by using it!
+    /*@GetMapping("/TurkishAirlines/tickets/find/passengerId")
+    public List<TicketResponseDTO> findTurkishAirlinesTicketByPassengerId(@RequestParam Long passengerId) throws Exception {
+        return m_ticketService.findTurkishAirlinesTicketByPassengerId(passengerId);
+    }*/
 
     /*@GetMapping("/PegasusAirlines/tickets/find/passengerId")
     public List<TicketResponseDTO> findPegasusAirlinesTicketByPassenger(@RequestParam Long passengerId) throws Exception {

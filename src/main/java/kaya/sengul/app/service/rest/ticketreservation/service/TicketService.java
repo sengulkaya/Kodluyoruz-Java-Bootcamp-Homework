@@ -5,13 +5,17 @@ import kaya.sengul.app.service.rest.ticketreservation.converter.PassengerConvert
 import kaya.sengul.app.service.rest.ticketreservation.converter.TicketConverter;
 import kaya.sengul.app.service.rest.ticketreservation.data.dal.ServiceApplicationDAL;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.passenger.Passenger;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.Flight;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.PegasusAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.TurkishAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PassengerRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TicketRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResponseDTO;
+import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
@@ -28,6 +32,25 @@ public class TicketService {
     private final PassengerService m_passengerService;
     private final PassengerConverter m_passengerConverter;
 
+    private int getAvailableSeatNumber(Flight flight)
+    {
+        Set<Ticket> ticketSet = flight.getTickets();
+        Set<Integer> seatNumbers = new HashSet<>();
+        java.util.Random rand = new Random();
+
+        for (var val : ticketSet) {
+            seatNumbers.add(val.getSeatNumber());
+        }
+
+        int seatNumber;
+        while (true) {
+            seatNumber = rand.nextInt(flight.getCapacity()) + 1;
+            if (!seatNumbers.contains(seatNumber))
+                break;
+        }
+        return seatNumber;
+    }
+
 
     public TicketService(ServiceApplicationDAL serviceApplicationDAL,
                          TicketConverter converter,
@@ -42,18 +65,6 @@ public class TicketService {
         m_turkishAirlinesService = turkishAirlinesService;
         m_passengerService = passengerService;
         m_passengerConverter = passengerConverter;
-    }
-
-    public List<TicketResponseDTO> findTurkishAirlinesTicketByPassengerId(Long passengerId) throws Exception {
-        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
-                .map(m_ticketConverter::toTicketResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<TicketResponseDTO> findTurkishAirlinesTickets() throws Exception {
-        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesTickets().spliterator(), false)
-                .map(m_ticketConverter::toTicketResponseDTO)
-                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -72,8 +83,7 @@ public class TicketService {
         if (size == flight.getCapacity())
             throw new Exception("Flight is full");
 
-        int seatNumber = size + 1;
-        ticket.setSeatNumber(seatNumber);
+        ticket.setSeatNumber(getAvailableSeatNumber(flight));
         Set<Ticket> passengerTickets = passenger.getPassengerTickets();
         passengerTickets.add(ticket);
         ticket.setPassenger(passenger);
@@ -85,15 +95,15 @@ public class TicketService {
         return m_ticketConverter.toTicketResponseDTO(m_serviceApplicationDAL.saveTurkishAirlinesTicket(ticket));
     }
 
+    public TicketResponseDTO cancelTurkishAirlinesTicket(Long ticketId) {
 
-    public List<TicketResponseDTO> findPegasusAirlinesTicketByPassengerId(Long passengerId) throws Exception {
-        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
-                .map(m_ticketConverter::toTicketResponseDTO)
-                .collect(Collectors.toList());
+        Ticket ticket = m_serviceApplicationDAL.findTicketById(ticketId);
+        m_serviceApplicationDAL.cancelTicket(ticket);
+        return m_ticketConverter.toTicketResponseDTO(ticket);
     }
 
-    public List<TicketResponseDTO> findPegasusAirlinesTickets() throws Exception {
-        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTickets().spliterator(), false)
+    public List<TicketResponseDTO> findTurkishAirlinesTickets() throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesTickets().spliterator(), false)
                 .map(m_ticketConverter::toTicketResponseDTO)
                 .collect(Collectors.toList());
     }
@@ -114,8 +124,8 @@ public class TicketService {
         if (size == flight.getCapacity())
             throw new Exception("Flight is full");
 
-        int seatNumber = size + 1;
-        ticket.setSeatNumber(seatNumber);
+
+        ticket.setSeatNumber(getAvailableSeatNumber(flight));
         Set<Ticket> passengerTickets = passenger.getPassengerTickets();
         passengerTickets.add(ticket);
         ticket.setPassenger(passenger);
@@ -126,5 +136,35 @@ public class TicketService {
 
         return m_ticketConverter.toTicketResponseDTO(m_serviceApplicationDAL.savePegasusAirlinesTicket(ticket));
     }
+
+    public TicketResponseDTO cancelPegasusAirlinesTicket(Long ticketId) {
+
+        Ticket ticket = m_serviceApplicationDAL.findTicketById(ticketId);
+        m_serviceApplicationDAL.cancelTicket(ticket);
+        return m_ticketConverter.toTicketResponseDTO(ticket);
+    }
+
+    public List<TicketResponseDTO> findPegasusAirlinesTickets() throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTickets().spliterator(), false)
+                .map(m_ticketConverter::toTicketResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+   /* public List<TicketResponseDTO> findPegasusAirlinesTicketByPassengerId(Long passengerId) throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findPegasusAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
+                .map(m_ticketConverter::toTicketResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TicketResponseDTO> findTurkishAirlinesTicketByPassengerId(Long passengerId) throws Exception {
+        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesTicketsByPassengerId(passengerId).spliterator(), false)
+                .map(m_ticketConverter::toTicketResponseDTO)
+                .collect(Collectors.toList());
+    }*/
 }
 

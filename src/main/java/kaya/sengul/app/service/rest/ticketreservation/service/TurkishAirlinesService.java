@@ -26,15 +26,6 @@ public class TurkishAirlinesService {
         m_turkishAirlinesConverter = converter;
     }
 
-    public TurkishAirlinesResponseDTO cancelFlight(Long flightId) throws Exception //new
-    {
-
-        TurkishAirlines turkishAirlines = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
-        m_serviceApplicationDAL.cancelTurkishAirlinesFlight(turkishAirlines);
-        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(turkishAirlines);
-
-
-    }
 
     public TurkishAirlinesResponseDTO saveFlight(TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) throws Exception
     {
@@ -68,11 +59,13 @@ public class TurkishAirlinesService {
                 (m_serviceApplicationDAL.saveTurkishAirlinesFlight(flight));
     }
 
-    public List<TurkishAirlinesResponseDTO> findTurkishAirlinesFlights()
+    public TurkishAirlinesResponseDTO cancelFlight(Long flightId) throws Exception //new
     {
-        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesFlights().spliterator(), false)
-                .map(m_turkishAirlinesConverter :: toTurkishAirlinesFlightResponseDTO)
-                .collect(Collectors.toList());
+
+        TurkishAirlines turkishAirlines = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
+        m_serviceApplicationDAL.cancelTurkishAirlinesFlight(turkishAirlines);
+        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(turkishAirlines);
+
 
     }
 
@@ -83,5 +76,11 @@ public class TurkishAirlinesService {
 
     }
 
+    public List<TurkishAirlinesResponseDTO> findTurkishAirlinesFlights()
+    {
+        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesFlights().spliterator(), false)
+                .map(m_turkishAirlinesConverter :: toTurkishAirlinesFlightResponseDTO)
+                .collect(Collectors.toList());
 
+    }
 }

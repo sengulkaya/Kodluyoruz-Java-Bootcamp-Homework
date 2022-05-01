@@ -24,6 +24,11 @@ public class TurkishAirlinesController {
         m_turkishAirlinesService = turkishAirlinesService;
     }
 
+    @PostMapping("/save")
+    public TurkishAirlinesResponseDTO saveFlight(@RequestBody TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) throws Exception {
+        return m_turkishAirlinesService.saveFlight(turkishAirlinesRequestDTO);
+    }
+
     @GetMapping("find/all")
     public List<TurkishAirlinesResponseDTO> findAllFlights() throws Exception {
         return m_turkishAirlinesService.findTurkishAirlinesFlights();
@@ -32,11 +37,6 @@ public class TurkishAirlinesController {
     @GetMapping("/find/id")
     public TurkishAirlinesResponseDTO findFlightById(@RequestParam("id") Long flightId) throws Exception {
         return m_turkishAirlinesService.findFlightById(flightId);
-    }
-
-    @PostMapping("/save")
-    public TurkishAirlinesResponseDTO saveFlight(@RequestBody TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) throws Exception {
-        return m_turkishAirlinesService.saveFlight(turkishAirlinesRequestDTO);
     }
 
     @PostMapping("/update/{id}")

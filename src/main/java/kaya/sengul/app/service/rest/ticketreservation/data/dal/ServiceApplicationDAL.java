@@ -33,6 +33,17 @@ public class ServiceApplicationDAL {
         m_ticketRepository = ticketRepository;
     }
 
+    public Ticket findTicketById(Long ticketId)
+    {
+        return m_ticketRepository.findById(ticketId).get();
+    }
+
+    public void cancelTicket(Ticket ticket)
+    {
+        m_ticketRepository.delete(ticket);
+    }
+
+
     public void cancelPegasusAirlinesFlight(PegasusAirlines pegasusAirlines)
     {
         m_pegasusAirlinesRepository.delete(pegasusAirlines);
