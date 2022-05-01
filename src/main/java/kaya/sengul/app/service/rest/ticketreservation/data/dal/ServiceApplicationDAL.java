@@ -33,6 +33,15 @@ public class ServiceApplicationDAL {
         m_ticketRepository = ticketRepository;
     }
 
+    public void cancelPegasusAirlinesFlight(PegasusAirlines pegasusAirlines)
+    {
+        m_pegasusAirlinesRepository.delete(pegasusAirlines);
+    }
+
+    public void cancelTurkishAirlinesFlight(TurkishAirlines turkishAirlines)
+    {
+        m_turkishAirlinesRepository.delete(turkishAirlines);
+    }
     public TurkishAirlines saveTurkishAirlinesFlight(TurkishAirlines turkishAirlines)
     {
 

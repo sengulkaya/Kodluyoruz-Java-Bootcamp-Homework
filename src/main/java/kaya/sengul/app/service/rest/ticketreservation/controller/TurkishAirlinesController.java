@@ -39,6 +39,18 @@ public class TurkishAirlinesController {
         return m_turkishAirlinesService.saveFlight(turkishAirlinesRequestDTO);
     }
 
+    @PostMapping("/update/{id}")
+    public TurkishAirlinesResponseDTO updateFlight(@PathVariable("id") Long flightId, @RequestBody TurkishAirlinesRequestDTO turkishAirlinesRequestDTO)
+    {
+        return m_turkishAirlinesService.updateFlight(flightId, turkishAirlinesRequestDTO);
+    }
+
+    @PostMapping("/cancel/id")
+    public TurkishAirlinesResponseDTO cancelFlight(@RequestParam("id") Long flightId) throws Exception {
+        return m_turkishAirlinesService.cancelFlight(flightId);
+    }
+
+
     /*@PostMapping("/update")
     public TurkishAirlinesResponseDTO updateFlight(@RequestBody TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) throws Exception {
         return m_turkishAirlinesService.updateFlight(turkishAirlinesRequestDTO);

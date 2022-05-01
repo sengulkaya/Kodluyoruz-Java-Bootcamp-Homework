@@ -28,4 +28,5 @@ public class PassengerController {
     public PassengerResponseDTO findPassengerById(@RequestParam("id") Long passengerId) throws Exception {
         return m_passengerService.findPassengerById(passengerId);
     }
+
 }

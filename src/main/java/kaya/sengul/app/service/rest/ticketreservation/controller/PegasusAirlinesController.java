@@ -21,18 +21,29 @@ public class PegasusAirlinesController {
         m_pegasusAirlinesService = pegasusAirlinesService;
     }
 
-    @PostMapping("/save")//ok
+    @PostMapping("/save")
     public PegasusAirlinesResponseDTO saveFlight(@RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO) throws Exception {
         return m_pegasusAirlinesService.saveFlight(pegasusAirlinesRequestDTO);
     }
 
-    @GetMapping("find/all")//ok
+    @GetMapping("find/all")
     public List<PegasusAirlinesResponseDTO> findAllFlights() throws Exception {
         return m_pegasusAirlinesService.findPegasusAirlinesFlights();
     }
 
-    @GetMapping("/find/id")//ok
+    @GetMapping("/find/id")
     public PegasusAirlinesResponseDTO findFlightById(@RequestParam("id") Long flightId) throws Exception {
         return m_pegasusAirlinesService.findFlightById(flightId);
+    }
+
+    @PostMapping("/update/{id}")
+    public PegasusAirlinesResponseDTO updateFlight(@PathVariable("id") Long flightId, @RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO)
+    {
+        return m_pegasusAirlinesService.updateFlight(flightId, pegasusAirlinesRequestDTO);
+    }
+
+    @PostMapping("/cancel/id")
+    public PegasusAirlinesResponseDTO cancelFlight(@RequestParam("id") Long flightId) throws Exception {
+        return m_pegasusAirlinesService.cancelFlight(flightId);
     }
 }
