@@ -9,6 +9,7 @@ import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResp
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.service.TicketService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,32 +27,80 @@ public class TicketController {
 
 
     @PostMapping("/TurkishAirlines/reserve")
-    public TicketResponseDTO reserveTurkishAirlinesTicket(@RequestBody TicketRequestDTO ticketRequestDTO) throws Exception {
-        return m_ticketService.reserveTurkishAirlinesTicket(ticketRequestDTO);
+    public ResponseEntity<TicketResponseDTO> reserveTurkishAirlinesTicket(@RequestBody TicketRequestDTO ticketRequestDTO) throws Exception {
+        ResponseEntity<TicketResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.reserveTurkishAirlinesTicket(ticketRequestDTO));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
     @GetMapping("/TurkishAirlines/tickets/all")
-    public List<TicketResponseDTO> findTurkishAirlinesTickets() throws Exception {
-        return m_ticketService.findTurkishAirlinesTickets();
+    public ResponseEntity<List<TicketResponseDTO>> findTurkishAirlinesTickets() throws Exception {
+        ResponseEntity<List<TicketResponseDTO>> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.findTurkishAirlinesTickets());
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
     @PostMapping("/TurkishAirlines/cancel/id")
-    public TicketResponseDTO cancelTurkishAirlinesTicket(@RequestParam("id") Long ticketId) throws Exception {
-        return m_ticketService.cancelTurkishAirlinesTicket(ticketId);
+    public ResponseEntity<TicketResponseDTO> cancelTurkishAirlinesTicket(@RequestParam("id") Long ticketId) throws Exception {
+        ResponseEntity<TicketResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.cancelTurkishAirlinesTicket(ticketId));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
 
     @PostMapping("/PegasusAirlines/reserve")//ok
-    public TicketResponseDTO reservePegasusAirlinesTicket(@RequestBody TicketRequestDTO ticketRequestDTO) throws Exception {
-        return m_ticketService.reservePegasusAirlinesTicket(ticketRequestDTO);
+    public ResponseEntity<TicketResponseDTO> reservePegasusAirlinesTicket(@RequestBody TicketRequestDTO ticketRequestDTO) throws Exception {
+        ResponseEntity<TicketResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.reservePegasusAirlinesTicket(ticketRequestDTO));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
-    @GetMapping("/PegasusAirlines/tickets/all")//ok
-    public List<TicketResponseDTO> findPegasusAirlinesTickets() throws Exception {
-        return m_ticketService.findPegasusAirlinesTickets();
+    @GetMapping("/PegasusAirlines/tickets/all")
+    public ResponseEntity<List<TicketResponseDTO>> findPegasusAirlinesTickets() {
+        ResponseEntity<List<TicketResponseDTO>> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.findPegasusAirlinesTickets());
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @PostMapping("/PegasusAirlines/cancel/id")
-    public TicketResponseDTO cancelPegasusAirlinesTicket(@RequestParam("id") Long ticketId) throws Exception {
-        return m_ticketService.cancelPegasusAirlinesTicket(ticketId);
+    public ResponseEntity<TicketResponseDTO> cancelPegasusAirlinesTicket(@RequestParam("id") Long ticketId) {
+        ResponseEntity<TicketResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_ticketService.cancelPegasusAirlinesTicket(ticketId));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     //passengerId is transiet in tickets table so it is not serializable and stored in db

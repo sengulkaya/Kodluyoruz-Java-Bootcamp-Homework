@@ -3,8 +3,10 @@ package kaya.sengul.app.service.rest.ticketreservation.service;
 
 import kaya.sengul.app.service.rest.ticketreservation.converter.TurkishAirlinesConverter;
 import kaya.sengul.app.service.rest.ticketreservation.data.dal.ServiceApplicationDAL;
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.TurkishAirlines;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.flight.TurkishAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
+import kaya.sengul.app.service.rest.ticketreservation.dto.exception.repository.RepositoryException;
+import kaya.sengul.app.service.rest.ticketreservation.dto.exception.service.TurkishAirlinesServiceException;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TurkishAirlinesRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import org.springframework.stereotype.Service;
@@ -29,58 +31,87 @@ public class TurkishAirlinesService {
 
     public TurkishAirlinesResponseDTO saveFlight(TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) throws Exception
     {
-        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(m_serviceApplicationDAL.saveTurkishAirlinesFlight
-                (m_turkishAirlinesConverter.toTurkishAirlines(turkishAirlinesRequestDTO)));
+        try {
+            return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(m_serviceApplicationDAL.saveTurkishAirlinesFlight
+                    (m_turkishAirlinesConverter.toTurkishAirlines(turkishAirlinesRequestDTO)));
+        } catch (RepositoryException ex) {
+            System.out.printf("%s: %s",ex.getCause(), ex.getMessage());
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.saveFlight", ex.getCause());
+        } catch (Throwable ex) {
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.saveFlight", ex);
+        }
     }
 
     @Transactional
     public TurkishAirlinesResponseDTO updateFlight(Long flightId, TurkishAirlinesRequestDTO turkishAirlinesRequestDTO) {
+        try {
+            TurkishAirlines flight = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
 
-        TurkishAirlines flight = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
+            flight.setName(turkishAirlinesRequestDTO.getName())
+                    .setCapacity(turkishAirlinesRequestDTO.getCapacity())
+                    .setBaseFare(turkishAirlinesRequestDTO.getBaseFare())
+                    .setInternational(turkishAirlinesRequestDTO.isInternational())
+                    .setCityOfDeparture(turkishAirlinesRequestDTO.getCityOfDeparture())
+                    .setCityOfArrival(turkishAirlinesRequestDTO.getCityOfArrival());
 
-        flight.setName(turkishAirlinesRequestDTO.getName())
-                        .setCapacity(turkishAirlinesRequestDTO.getCapacity())
-                                .setBaseFare(turkishAirlinesRequestDTO.getBaseFare())
-                                        .setInternational(turkishAirlinesRequestDTO.isInternational())
-                                                .setCityOfDeparture(turkishAirlinesRequestDTO.getCityOfDeparture())
-                                                        .setCityOfArrival(turkishAirlinesRequestDTO.getCityOfArrival());
+            Set<Ticket> flightTickets = flight.getTickets();
+            for (var ticket : flightTickets) {
+                ticket.setInternational(flight.isInternational())
+                        .setCityOfDeparture(flight.getCityOfDeparture())
+                        .setCityOfArrival(flight.getCityOfArrival())
+                        .setFare(flight.getBaseFare());
+            }
 
-        Set<Ticket> flightTickets = flight.getTickets();
-        for (var ticket : flightTickets) {
-            ticket.setInternational(flight.isInternational())
-                    .setCityOfDeparture(flight.getCityOfDeparture())
-                    .setCityOfArrival(flight.getCityOfArrival())
-                    .setFare(flight.getBaseFare());
+            flight.setTickets(flightTickets);
+
+            return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO
+                    (m_serviceApplicationDAL.saveTurkishAirlinesFlight(flight));
+        } catch (RepositoryException ex) {
+            System.out.printf("%s: %s",ex.getCause(), ex.getMessage());
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.updateFlight", ex.getCause());
+        } catch (Throwable ex) {
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.updateFlight", ex);
         }
-
-        flight.setTickets(flightTickets);
-
-        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO
-                (m_serviceApplicationDAL.saveTurkishAirlinesFlight(flight));
     }
 
     public TurkishAirlinesResponseDTO cancelFlight(Long flightId) throws Exception //new
     {
-
-        TurkishAirlines turkishAirlines = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
-        m_serviceApplicationDAL.cancelTurkishAirlinesFlight(turkishAirlines);
-        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(turkishAirlines);
-
-
+        try {
+            TurkishAirlines turkishAirlines = m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId);
+            m_serviceApplicationDAL.cancelTurkishAirlinesFlight(turkishAirlines);
+            return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO(turkishAirlines);
+        } catch (RepositoryException ex) {
+            System.out.printf("%s: %s",ex.getCause(), ex.getMessage());
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.cancelFlight", ex.getCause());
+        } catch (Throwable ex) {
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.cancelFlight", ex);
+        }
     }
 
     public TurkishAirlinesResponseDTO findFlightById(Long flightId)
     {
-        return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO
-                (m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId));
-
+        try {
+            return m_turkishAirlinesConverter.toTurkishAirlinesFlightResponseDTO
+                    (m_serviceApplicationDAL.findTurkishAirlinesFlightById(flightId));
+        } catch (RepositoryException ex) {
+            System.out.printf("%s: %s",ex.getCause(), ex.getMessage());
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.findFlightById", ex.getCause());
+        } catch (Throwable ex) {
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.findFlightById", ex);
+        }
     }
 
     public List<TurkishAirlinesResponseDTO> findTurkishAirlinesFlights()
     {
-        return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesFlights().spliterator(), false)
-                .map(m_turkishAirlinesConverter :: toTurkishAirlinesFlightResponseDTO)
-                .collect(Collectors.toList());
-
+        try {
+            return StreamSupport.stream(m_serviceApplicationDAL.findTurkishAirlinesFlights().spliterator(), false)
+                    .map(m_turkishAirlinesConverter :: toTurkishAirlinesFlightResponseDTO)
+                    .collect(Collectors.toList());
+        } catch (RepositoryException ex) {
+            System.out.printf("%s: %s",ex.getCause(), ex.getMessage());
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.findTurkishAirlinesFlights", ex.getCause());
+        } catch (Throwable ex) {
+            throw new TurkishAirlinesServiceException("TurkishAirlinesService.findTurkishAirlinesFlights", ex);
+        }
     }
 }

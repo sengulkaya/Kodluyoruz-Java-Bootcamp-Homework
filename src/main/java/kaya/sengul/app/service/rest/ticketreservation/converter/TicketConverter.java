@@ -1,16 +1,10 @@
 package kaya.sengul.app.service.rest.ticketreservation.converter;
 
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.passenger.Passenger;
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.Flight;
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.BookingClass;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.flight.Flight;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TicketRequestDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PassengerResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResponseDTO;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Component
 public class TicketConverter {

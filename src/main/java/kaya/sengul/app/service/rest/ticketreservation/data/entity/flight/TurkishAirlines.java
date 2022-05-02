@@ -1,30 +1,19 @@
-package kaya.sengul.app.service.rest.ticketreservation.data.entity.plane;
-
-
-
+package kaya.sengul.app.service.rest.ticketreservation.data.entity.flight;
 
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.List;
 import java.util.Set;
 
 
 @Entity
-public class PegasusAirlines extends Flight {
-
+public class TurkishAirlines extends Flight {
     @Override
     public void serveFood() {
         if (super.isInternational())
             System.out.println("Pegasus Airlines food service for international flights");
         else
             System.out.println("Pegasus Airlines food service for domestic flights");
-    }
-
-    @Override
-    public Flight setCityOfDeparture(String cityOfDeparture) {
-        return super.setCityOfDeparture(cityOfDeparture);
     }
 
     @Override
@@ -92,6 +81,11 @@ public class PegasusAirlines extends Flight {
         return super.getCityOfDeparture();
     }
 
+    @Override
+    public Flight setCityOfDeparture(String cityOfDeparture) {
+        return super.setCityOfDeparture(cityOfDeparture);
+    }
+
     /*@Override
     public String getFlightCode() {
         return super.getFlightCode();
@@ -113,4 +107,8 @@ public class PegasusAirlines extends Flight {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

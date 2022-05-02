@@ -1,14 +1,8 @@
 package kaya.sengul.app.service.rest.ticketreservation.converter;
 
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.PegasusAirlines;
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.plane.TurkishAirlines;
-import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
+import kaya.sengul.app.service.rest.ticketreservation.data.entity.flight.PegasusAirlines;
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PegasusAirlinesRequestDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TurkishAirlinesRequestDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PassengerResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PegasusAirlinesResponseDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TicketResponseDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;

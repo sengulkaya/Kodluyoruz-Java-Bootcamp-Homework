@@ -1,11 +1,10 @@
 package kaya.sengul.app.service.rest.ticketreservation.controller;
 
 import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.PegasusAirlinesRequestDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.requestDTO.TurkishAirlinesRequestDTO;
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PegasusAirlinesResponseDTO;
-import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.service.PegasusAirlinesService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,28 +21,65 @@ public class PegasusAirlinesController {
     }
 
     @PostMapping("/save")
-    public PegasusAirlinesResponseDTO saveFlight(@RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO) throws Exception {
-        return m_pegasusAirlinesService.saveFlight(pegasusAirlinesRequestDTO);
+    public ResponseEntity<PegasusAirlinesResponseDTO> saveFlight(@RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO) {
+        ResponseEntity<PegasusAirlinesResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_pegasusAirlinesService.saveFlight(pegasusAirlinesRequestDTO));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @GetMapping("find/all")
-    public List<PegasusAirlinesResponseDTO> findAllFlights() throws Exception {
-        return m_pegasusAirlinesService.findPegasusAirlinesFlights();
+    public ResponseEntity<List<PegasusAirlinesResponseDTO>> findAllFlights() {
+        ResponseEntity<List<PegasusAirlinesResponseDTO>> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_pegasusAirlinesService.findPegasusAirlinesFlights());
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @GetMapping("/find/id")
-    public PegasusAirlinesResponseDTO findFlightById(@RequestParam("id") Long flightId) throws Exception {
-        return m_pegasusAirlinesService.findFlightById(flightId);
+    public ResponseEntity<PegasusAirlinesResponseDTO> findFlightById(@RequestParam("id") Long flightId) {
+        ResponseEntity<PegasusAirlinesResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_pegasusAirlinesService.findFlightById(flightId));
+        } catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @PostMapping("/update/{id}")
-    public PegasusAirlinesResponseDTO updateFlight(@PathVariable("id") Long flightId, @RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO)
+    public ResponseEntity<PegasusAirlinesResponseDTO> updateFlight(@PathVariable("id") Long flightId, @RequestBody PegasusAirlinesRequestDTO pegasusAirlinesRequestDTO)
     {
-        return m_pegasusAirlinesService.updateFlight(flightId, pegasusAirlinesRequestDTO);
+        ResponseEntity<PegasusAirlinesResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_pegasusAirlinesService.updateFlight(flightId, pegasusAirlinesRequestDTO));
+        } catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @PostMapping("/cancel/id")
-    public PegasusAirlinesResponseDTO cancelFlight(@RequestParam("id") Long flightId) throws Exception {
-        return m_pegasusAirlinesService.cancelFlight(flightId);
+    public ResponseEntity<PegasusAirlinesResponseDTO> cancelFlight(@RequestParam("id") Long flightId) throws Exception {
+        ResponseEntity<PegasusAirlinesResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_pegasusAirlinesService.cancelFlight(flightId));
+        } catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 }

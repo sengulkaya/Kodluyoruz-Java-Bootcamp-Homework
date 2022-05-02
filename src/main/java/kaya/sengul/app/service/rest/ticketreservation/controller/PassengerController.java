@@ -6,6 +6,7 @@ import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.PassengerR
 import kaya.sengul.app.service.rest.ticketreservation.dto.responseDTO.TurkishAirlinesResponseDTO;
 import kaya.sengul.app.service.rest.ticketreservation.service.PassengerService;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,14 +20,30 @@ public class PassengerController {
     }
 
     @PostMapping("/save")
-    public PassengerResponseDTO savePassenger(@RequestBody PassengerRequestDTO passengerRequestDTO) throws Exception
+    public ResponseEntity<PassengerResponseDTO> savePassenger(@RequestBody PassengerRequestDTO passengerRequestDTO) throws Exception
     {
-        return m_passengerService.savePassenger(passengerRequestDTO);
+        ResponseEntity<PassengerResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_passengerService.savePassenger(passengerRequestDTO));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
     @GetMapping("/find/id")
-    public PassengerResponseDTO findPassengerById(@RequestParam("id") Long passengerId) throws Exception {
-        return m_passengerService.findPassengerById(passengerId);
+    public ResponseEntity<PassengerResponseDTO> findPassengerById(@RequestParam("id") Long passengerId) throws Exception {
+        ResponseEntity<PassengerResponseDTO> responseEntity = ResponseEntity.badRequest().build();
+
+        try {
+            responseEntity = ResponseEntity.ok(m_passengerService.findPassengerById(passengerId));
+        }
+        catch (Throwable ex) {
+            System.out.printf("%s: %s", ex.getMessage(), ex.getCause());
+        }
+        return responseEntity;
     }
 
 }

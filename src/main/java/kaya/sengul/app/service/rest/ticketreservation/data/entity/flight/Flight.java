@@ -1,19 +1,11 @@
-package kaya.sengul.app.service.rest.ticketreservation.data.entity.plane;
+package kaya.sengul.app.service.rest.ticketreservation.data.entity.flight;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import kaya.sengul.app.service.rest.ticketreservation.data.entity.ticket.Ticket;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 
 @Entity
 @Table(name = "Flights")
